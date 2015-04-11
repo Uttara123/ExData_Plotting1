@@ -8,13 +8,10 @@ df <- df[df$Global_active_power != "?", ]
 df <- df[df$Sub_metering_1 != "?",]
 df <- df[df$Sub_metering_2 != "?",]
 df <- df[df$Sub_metering_3 != "?",]
-# convert date into day of the week
+# create a new column with the date and time combined into standard format
 df$tmp <- paste(df$Date,df$Time)
 df$tmp <- strptime(df[,"tmp"],"%d/%m/%Y %H:%M:%S")   
-df$Time <- strptime(df[,"Time"],"%H:%M:%S")   
-#df$Date <- weekdays(df$Date)
-# create the plot
-#hist(as.numeric(as.character(df$Global_active_power)), col="red", main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
+# plot the graph on the screen
 with(df, plot(df$tmp, as.numeric(as.character(df$Global_active_power)) , ylab = "Global Activer Power(kilowatts)", xlab="", main="", type="l" )) 
 # copy the plot to a png file
 dev.copy(png, file="plot2.png", width = 480, height = 480)

@@ -8,20 +8,17 @@ df <- df[df$Global_active_power != "?", ]
 df <- df[df$Sub_metering_1 != "?",]
 df <- df[df$Sub_metering_2 != "?",]
 df <- df[df$Sub_metering_3 != "?",]
-# convert date into day of the week
+# create a new column with data and time combined in a standard format
 df$tmp <- paste(df$Date,df$Time)
 df$tmp <- strptime(df[,"tmp"],"%d/%m/%Y %H:%M:%S")   
-df$Time <- strptime(df[,"Time"],"%H:%M:%S")   
-#df$Date <- weekdays(df$Date)
-# create the plot
-#hist(as.numeric(as.character(df$Global_active_power)), col="red", main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
+# plot the Sub_metering_1
 with(df, plot(df$tmp, as.numeric(as.character(df$Sub_metering_1)) , ylab = "Energy sub metering", xlab="", main="",type="l" ))
-legend("topright", legend = "Sub_metering_1") 
-# copy the plot to a png file
+# add line for Sub_metering_2
 lines(df$tmp, as.numeric(as.character(df$Sub_metering_2)),col="red")
-legend("topright", legend = "Sub_metering_2") 
+# add line for Sub_metering_3 
 lines(df$tmp, as.numeric(as.character(df$Sub_metering_3)),col="blue")
-legend("topright", legend = "Sub_metering_3") 
+# add legend
+legend("topright", lty = c(1,1,1), col = c("black", "red", "blue") , legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3")) 
  
 dev.copy(png, file="plot3.png", width = 480, height = 480)
 dev.off(3)
